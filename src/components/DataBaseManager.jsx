@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { FaEye, FaEyeSlash, FaRegCopy } from "react-icons/fa";
 import { toast } from "react-toastify";
 import { v4 as uuidv4 } from "uuid";
@@ -146,21 +146,70 @@ const DataBaseManager = () => {
                   <th className="px-6 py-3">Site</th>
                   <th className="px-6 py-3">Username</th>
                   <th className="px-6 py-3">Password</th>
-                  <th className="px-6 py-3">Actions</th>
+                  <th className="px-6 py-3 text-center">Actions</th>
                 </tr>
               </thead>
+
               <tbody className="divide-y divide-teal-500/10 bg-[#0f172a]/50">
                 {passwordArray.map((item, index) => (
                   <tr
                     key={index}
                     className="hover:bg-[#1e293b]/60 transition-all duration-200"
                   >
-                    <td className="px-6 py-3">{item.site}</td>
-                    <td className="px-6 py-3">{item.userName}</td>
                     <td className="px-6 py-3">
-                      {"*".repeat(item.password.length)}
+                      <div className="flex items-center justify-start gap-2">
+                        <span>{item.site}</span>
+                        <button
+                          onClick={() => {
+                            navigator.clipboard.writeText(item.site);
+                            toast.success("siteName copied!");
+                          }}
+                          className="text-teal-400 hover:text-teal-300 transition"
+                          title="Copy Site"
+                        >
+                          <FaRegCopy className="w-4 h-4" />
+                        </button>
+                      </div>
                     </td>
+
                     <td className="px-6 py-3">
+                      <div className="flex items-center justify-start gap-2">
+                        <span>{item.userName}</span>
+                        <button
+                          onClick={() => {
+                            navigator.clipboard.writeText(item.userName);
+                            toast.success("userName copied!");
+                          }}
+                          className="text-teal-400 hover:text-teal-300 transition"
+                          title="Copy Username"
+                        >
+                          <FaRegCopy className="w-4 h-4" />
+                        </button>
+                      </div>
+                    </td>
+
+                    <td className="px-6 py-3">
+                      <div className="flex items-center gap-3">
+                        <span className="tracking-wider">
+                          {"*".repeat(item.password.length)}
+                        </span>
+
+                        <button
+                          onClick={() => {
+                            navigator.clipboard.writeText(item.password);
+                            toast.success("Password copied!");
+                          }}
+                          className="p-1.5 rounded-full bg-[#1e293b] hover:bg-[#334155] 
+                 transition-all duration-200 text-teal-400 hover:text-teal-300
+                 shadow-sm hover:shadow-[0_0_6px_#14b8a6]"
+                          title="Copy Password"
+                        >
+                          <FaRegCopy className="w-4 h-4" />
+                        </button>
+                      </div>
+                    </td>
+
+                    <td className="px-6 py-3 text-center">
                       <button
                         onClick={() => editPassword(item.id)}
                         className="text-teal-400 hover:underline mr-3"
