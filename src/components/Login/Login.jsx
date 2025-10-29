@@ -21,10 +21,9 @@ const Login = () => {
   //   });
   // };
 
-  const onSubmit = async (data) => {
-    // await delay(2); // add network delay
-
-    await fetch("http://localhost:3005/login", {
+ const onSubmit = async (data) => {
+  try {
+    const res = await fetch("http://localhost:3005/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -32,13 +31,23 @@ const Login = () => {
       body: JSON.stringify(data),
     });
 
-    toast.success("Login Successfully");
-    navigate("/password-manager");
+    const result = await res.json();
 
-    // if (data.userName !== "Owais") {
-    //   setError("authentication", { message: "Invalid userName" });
-    // }
-  };
+    if (result.success) {
+      //  store the token safely
+      localStorage.setItem("token", result.token);
+
+      toast.success("Login Successfully");
+      navigate("/password-manager");
+    } else {
+      toast.error("Login Failed");
+    }
+  } catch (err) {
+    console.error("Login error:", err);
+    toast.error("Something went wrong ⚠️");
+  }
+};
+
   return (
     <>
       <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-100">
